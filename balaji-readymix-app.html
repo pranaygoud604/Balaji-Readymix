@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Balaji Readymix & Bricks Industry</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--brick:#C0392B;--brick-dark:#922B21;--brick-light:#E74C3C;--gold:#D4AC0D;--dark:#1C1917;--surface:#FAFAF9;--white:#ffffff;--border:rgba(0,0,0,0.08);--text:#1C1917;--muted:#78716C;--radius:10px;--radius-lg:14px}
+html,body{height:100%;font-family:system-ui,-apple-system,sans-serif;background:var(--surface);color:var(--text);font-size:14px;line-height:1.5}
+#app{min-height:100vh;display:flex;flex-direction:column}
+
+/* NAV */
+nav{background:var(--dark);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;flex-shrink:0;position:sticky;top:0;z-index:50}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
+.nav-logo{width:34px;height:34px;background:var(--brick);clip-path:polygon(0 0,84% 0,100% 16%,100% 100%,16% 100%,0 84%);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-title-main{color:#fff;font-weight:700;font-size:14px;letter-spacing:0.02em}
+.nav-title-sub{color:rgba(255,255,255,0.45);font-size:11px;letter-spacing:0.05em}
+.nav-links{display:flex;gap:2px}
+.nav-link{color:rgba(255,255,255,0.55);padding:7px 14px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:500;transition:.15s;border:none;background:none}
+.nav-link:hover,.nav-link.active{color:#fff;background:rgba(255,255,255,0.1)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.cart-btn{position:relative;background:var(--brick);color:#fff;border:none;border-radius:8px;padding:7px 16px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;gap:7px;transition:.15s}
+.cart-btn:hover{background:var(--brick-dark)}
+.cart-badge{background:#fff;color:var(--brick);border-radius:12px;padding:1px 6px;font-size:11px;font-weight:700;min-width:20px;text-align:center;line-height:18px}
+.user-btn{color:rgba(255,255,255,0.65);background:none;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;font-weight:500;transition:.15s}
+.user-btn:hover{border-color:rgba(255,255,255,0.35);color:#fff}
+
+/* PAGES */
+.page{display:none;flex:1;flex-direction:column}
+.page.active{display:flex}
+
+/* HOME HERO */
+.hero{background:var(--dark);color:#fff;padding:72px 28px 60px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 70% 50%,rgba(192,57,43,0.18),transparent 60%)}
+.hero-inner{position:relative;max-width:560px}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;color:var(--gold);font-size:11px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;margin-bottom:18px}
+.hero-eyebrow::before{content:'';width:28px;height:2px;background:var(--gold)}
+.hero h1{font-size:clamp(36px,5vw,62px);font-weight:800;line-height:1.05;margin-bottom:6px}
+.hero h1 .accent{color:var(--brick-light);display:block}
+.hero h1 .sub{color:rgba(255,255,255,0.4);font-size:.52em;font-weight:400;display:block;margin-top:4px}
+.hero p{color:rgba(255,255,255,0.55);font-size:15px;line-height:1.75;margin:20px 0 32px;max-width:440px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-hero{background:var(--brick);color:#fff;border:none;border-radius:var(--radius);padding:13px 28px;cursor:pointer;font-size:14px;font-weight:700;letter-spacing:.02em;transition:.15s}
+.btn-hero:hover{background:var(--brick-dark);transform:translateY(-1px)}
+.btn-hero-ghost{background:transparent;color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.25);border-radius:var(--radius);padding:12px 28px;cursor:pointer;font-size:14px;font-weight:600;transition:.15s}
+.btn-hero-ghost:hover{border-color:rgba(255,255,255,0.55);color:#fff}
+
+/* STATS */
+.stats-bar{background:var(--brick);display:grid;grid-template-columns:repeat(4,1fr)}
+.stat-item{padding:16px 12px;text-align:center;border-right:1px solid rgba(255,255,255,0.12)}
+.stat-item:last-child{border-right:none}
+.stat-num{color:#fff;font-size:24px;font-weight:800;line-height:1}
+.stat-label{color:rgba(255,255,255,0.65);font-size:11px;margin-top:3px}
+
+/* SECTIONS */
+.section{padding:40px 28px}
+.section-hd{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:22px}
+.section-title{font-size:22px;font-weight:700}
+.see-all{color:var(--brick);font-size:13px;cursor:pointer;font-weight:600;background:none;border:none}
+.see-all:hover{text-decoration:underline}
+
+/* PRODUCT CARDS */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.product-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;transition:.2s}
+.product-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.1);transform:translateY(-3px);border-color:rgba(192,57,43,0.25)}
+.prod-img{height:150px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative}
+.prod-img.bricks{background:linear-gradient(135deg,#7B241C,#C0392B)}
+.prod-img.concrete{background:linear-gradient(135deg,#4A4A4A,#7F8C8D)}
+.prod-img.materials{background:linear-gradient(135deg,#5D4037,#8D6E63)}
+.prod-badge{position:absolute;top:10px;left:10px;background:var(--gold);color:#412402;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px}
+.prod-cat{color:var(--muted);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.prod-name{font-weight:700;font-size:15px;margin-bottom:5px;line-height:1.3}
+.prod-desc{color:var(--muted);font-size:12px;line-height:1.5;margin-bottom:12px}
+.prod-footer{display:flex;align-items:flex-end;justify-content:space-between}
+.prod-price{font-size:20px;font-weight:800;color:var(--brick)}
+.prod-unit{font-size:11px;color:var(--muted);font-weight:400}
+.prod-min{font-size:10px;color:var(--muted);margin-top:2px}
+.add-btn{background:var(--brick);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;transition:.15s;white-space:nowrap}
+.add-btn:hover{background:var(--brick-dark)}
+.prod-body{padding:14px}
+
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.feature-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:20px;border-top:3px solid var(--brick)}
+.feat-icon{font-size:28px;margin-bottom:10px;display:block}
+.feat-title{font-weight:700;margin-bottom:5px}
+.feat-desc{color:var(--muted);font-size:12px;line-height:1.6}
+
+/* PRODUCTS PAGE */
+.toolbar{padding:16px 28px;display:flex;gap:10px;align-items:center;border-bottom:0.5px solid var(--border);background:var(--white);position:sticky;top:56px;z-index:40}
+.search-box{flex:1;border:0.5px solid var(--border);border-radius:var(--radius);padding:9px 14px;font-size:13px;outline:none;transition:.15s;background:var(--surface)}
+.search-box:focus{border-color:var(--brick);background:var(--white)}
+.filter-sel{border:0.5px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:13px;background:var(--white);cursor:pointer;outline:none}
+.products-page-grid{padding:20px 28px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+
+/* CART */
+.cart-wrap{display:grid;grid-template-columns:1fr 300px;gap:20px;padding:24px 28px;flex:1;align-items:start}
+.cart-title{font-size:18px;font-weight:700;margin-bottom:16px}
+.cart-items{display:flex;flex-direction:column;gap:12px}
+.cart-item{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:16px;display:flex;gap:14px;align-items:center}
+.ci-img{width:60px;height:60px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.ci-info{flex:1;min-width:0}
+.ci-name{font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-price{color:var(--muted);font-size:12px}
+.ci-bulk{color:#15803d;font-size:11px;font-weight:600}
+.qty-ctrl{display:flex;align-items:center;gap:8px}
+.qty-btn{width:30px;height:30px;border:0.5px solid var(--border);border-radius:7px;background:var(--white);cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;font-weight:600;transition:.15s;line-height:1}
+.qty-btn:hover{background:var(--surface);border-color:var(--brick);color:var(--brick)}
+.qty-val{font-weight:700;font-size:14px;min-width:50px;text-align:center}
+.ci-total{text-align:right;flex-shrink:0}
+.ci-total-amt{font-weight:800;font-size:16px}
+.remove-btn{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;display:block;margin-top:4px}
+.remove-btn:hover{color:var(--brick)}
+
+/* SUMMARY */
+.order-summary{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:20px;position:sticky;top:80px}
+.summary-title{font-weight:700;font-size:16px;margin-bottom:16px}
+.sum-row{display:flex;justify-content:space-between;margin-bottom:9px;font-size:13px;color:var(--muted)}
+.sum-row.total{font-weight:800;font-size:17px;color:var(--text);border-top:0.5px solid var(--border);padding-top:10px;margin-top:6px;margin-bottom:0}
+.coupon-wrap{display:flex;gap:6px;margin:14px 0}
+.coupon-in{flex:1;border:0.5px solid var(--border);border-radius:8px;padding:8px 11px;font-size:13px;outline:none;font-family:monospace;text-transform:uppercase}
+.coupon-in:focus{border-color:var(--brick)}
+.coupon-apply{background:var(--surface);border:0.5px solid var(--border);border-radius:8px;padding:8px 13px;cursor:pointer;font-size:12px;font-weight:700;color:var(--brick);transition:.15s}
+.coupon-apply:hover{background:#fef2f2;border-color:rgba(192,57,43,0.3)}
+.discount-row{display:none;justify-content:space-between;font-size:13px;color:#15803d;margin-bottom:9px}
+.checkout-btn{width:100%;background:var(--brick);color:#fff;border:none;border-radius:var(--radius);padding:14px;font-size:14px;font-weight:800;cursor:pointer;margin-top:16px;transition:.15s;letter-spacing:.02em}
+.checkout-btn:hover{background:var(--brick-dark)}
+.pay-note{text-align:center;font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6}
+.empty-cart{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--muted);padding:60px}
+.empty-icon{font-size:56px;opacity:.35}
+
+/* ORDERS */
+.orders-wrap{padding:24px 28px;flex:1}
+.orders-list{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+.order-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:18px}
+.order-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.order-num{font-weight:800;font-family:monospace;font-size:15px}
+.order-date{color:var(--muted);font-size:12px;margin-top:2px}
+.order-items-preview{font-size:13px;color:var(--muted);margin-bottom:12px}
+.order-bottom{display:flex;justify-content:space-between;align-items:center;border-top:0.5px solid var(--border);padding-top:12px}
+.order-total{font-weight:800;font-size:16px}
+.status-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.s-delivered{background:#dcfce7;color:#15803d}
+.s-dispatched{background:#fef9c3;color:#854d0e}
+.s-pending{background:#f3f4f6;color:#374151}
+.s-confirmed{background:#dbeafe;color:#1d4ed8}
+.s-cancelled{background:#fef2f2;color:#b91c1c}
+
+/* CONTACT */
+.contact-wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:24px;padding:24px 28px;flex:1}
+.contact-info-cards{display:flex;flex-direction:column;gap:12px}
+.info-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:16px;display:flex;gap:14px}
+.info-icon{width:44px;height:44px;background:#fef2f2;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.info-title{font-weight:700;margin-bottom:4px}
+.info-lines{color:var(--muted);font-size:12px;line-height:1.7}
+.contact-form{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:24px}
+.form-title{font-size:18px;font-weight:700;margin-bottom:20px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.form-input{border:0.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;outline:none;font-family:inherit;transition:.15s}
+.form-input:focus{border-color:var(--brick)}
+textarea.form-input{resize:vertical;min-height:90px}
+.submit-btn{background:var(--brick);color:#fff;border:none;border-radius:var(--radius);padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;margin-top:16px;transition:.15s;width:100%}
+.submit-btn:hover{background:var(--brick-dark)}
+
+/* ADMIN */
+.admin-shell{display:flex;flex:1;min-height:0}
+.sidebar{width:200px;background:var(--dark);flex-shrink:0;padding:14px 8px;display:flex;flex-direction:column}
+.sidebar-section{color:rgba(255,255,255,0.3);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 10px 8px}
+.sidebar-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.5);font-size:13px;font-weight:500;margin-bottom:2px;border:none;background:none;width:100%;text-align:left;transition:.15s}
+.sidebar-item:hover,.sidebar-item.active{background:rgba(255,255,255,0.1);color:#fff}
+.sidebar-item svg{flex-shrink:0;opacity:.7}
+.sidebar-item.active svg{opacity:1}
+.sidebar-bottom{margin-top:auto;padding-top:12px;border-top:0.5px solid rgba(255,255,255,0.08)}
+.admin-main{flex:1;overflow:auto;background:var(--surface);padding:24px}
+.admin-pg{display:none}
+.admin-pg.active{display:block}
+.admin-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.admin-hd h2{font-size:20px;font-weight:700}
+.admin-action-btn{background:var(--brick);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer}
+.admin-action-btn:hover{background:var(--brick-dark)}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.kpi{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:16px}
+.kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:8px}
+.kpi-value{font-size:26px;font-weight:800;line-height:1}
+.kpi-trend{font-size:11px;margin-top:5px;font-weight:600}
+.up{color:#15803d}.down{color:#b91c1c}
+
+/* CHARTS */
+.charts-row{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:22px}
+.chart-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:18px}
+.chart-card-title{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em}
+.bar-chart{display:flex;align-items:flex-end;gap:7px;height:100px}
+.bc-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;height:100%}
+.bc-bar{background:var(--brick);border-radius:3px 3px 0 0;width:100%;transition:.4s}
+.bc-label{font-size:10px;color:var(--muted)}
+.legend{display:flex;flex-direction:column;gap:10px}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12px}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* TABLE */
+.data-table{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.table-header{display:grid;background:var(--surface);border-bottom:0.5px solid var(--border);padding:10px 16px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.table-row{display:grid;padding:12px 16px;border-bottom:0.5px solid var(--border);font-size:13px;align-items:center;transition:.1s;cursor:pointer}
+.table-row:last-child{border-bottom:none}
+.table-row:hover{background:var(--surface)}
+
+/* INVENTORY */
+.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.inv-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:16px}
+.inv-card.low{border-color:rgba(192,57,43,0.35);background:#fef9f9}
+.inv-name{font-weight:700;font-size:14px;margin-bottom:3px}
+.inv-wh{font-size:11px;color:var(--muted);margin-bottom:10px}
+.inv-stat{display:flex;justify-content:space-between;font-size:12px;margin-top:5px}
+.inv-stat-label{color:var(--muted)}
+.inv-stat-val{font-weight:600}
+.progress{background:#f3f4f6;border-radius:4px;height:6px;margin-top:10px;overflow:hidden}
+.progress-fill{background:var(--brick);height:100%;border-radius:4px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:.2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--white);border-radius:var(--radius-lg);width:360px;max-width:90vw;overflow:hidden;transform:scale(.95);transition:.2s}
+.modal-overlay.open .modal-box{transform:scale(1)}
+.modal-head{padding:18px 20px;border-bottom:0.5px solid var(--border);font-weight:700;font-size:16px;display:flex;justify-content:space-between;align-items:center}
+.modal-close{background:none;border:none;cursor:pointer;font-size:20px;color:var(--muted);line-height:1;padding:2px}
+.modal-body{padding:20px}
+.modal-foot{padding:14px 20px;border-top:0.5px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.btn-cancel{background:var(--surface);border:0.5px solid var(--border);border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px;font-weight:600}
+.btn-confirm{background:var(--brick);color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px;font-weight:700;transition:.15s}
+.btn-confirm:hover{background:var(--brick-dark)}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--dark);color:#fff;padding:12px 18px;border-radius:var(--radius);font-size:13px;font-weight:500;border-left:3px solid var(--brick);z-index:9999;transform:translateY(60px);opacity:0;transition:.3s;max-width:300px}
+.toast.visible{transform:translateY(0);opacity:1}
+
+/* SUCCESS */
+.success-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 28px;flex:1;text-align:center}
+.success-icon{width:80px;height:80px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:20px}
+.cta-section{background:var(--brick);padding:40px 28px;text-align:center}
+.cta-section h2{color:#fff;font-size:26px;font-weight:800;margin-bottom:8px}
+.cta-section p{color:rgba(255,255,255,0.7);font-size:14px;margin-bottom:22px}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .stats-bar{grid-template-columns:repeat(2,1fr)}
+  .cart-wrap{grid-template-columns:1fr}
+  .contact-wrap{grid-template-columns:1fr}
+  .charts-row{grid-template-columns:1fr}
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .form-grid{grid-template-columns:1fr}
+  .admin-shell{flex-direction:column}
+  .sidebar{width:100%;flex-direction:row;flex-wrap:wrap;padding:8px}
+  .sidebar-section{display:none}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- NAVBAR -->
+  <nav>
+    <div class="nav-brand" onclick="show('home')">
+      <div class="nav-logo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><rect x="2" y="15" width="20" height="5" rx="1"/><rect x="2" y="8" width="20" height="6" rx="1"/><rect x="2" y="2" width="20" height="5" rx="1"/></svg>
+      </div>
+      <div>
+        <div class="nav-title-main">Balaji Readymix & Bricks</div>
+        <div class="nav-title-sub">JAYASHANKAR BHUPALPALLY · TELANGANA</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <button class="nav-link active" id="nl-home" onclick="show('home')">Home</button>
+      <button class="nav-link" id="nl-products" onclick="show('products')">Products</button>
+      <button class="nav-link" id="nl-orders" onclick="show('orders')">My Orders</button>
+      <button class="nav-link" id="nl-contact" onclick="show('contact')">Contact</button>
+      <button class="nav-link" id="nl-admin" onclick="show('admin')">Admin</button>
+    </div>
+    <div class="nav-right">
+      <button class="cart-btn" onclick="show('cart')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Cart <span class="cart-badge" id="cart-count">0</span>
+      </button>
+      <button class="user-btn" onclick="toast('Login connects to your backend auth system')">Login</button>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <div class="page active" id="pg-home">
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="hero-eyebrow">Telangana's Trusted Supplier</div>
+        <h1>Building<span class="accent">Stronger</span><span class="sub">Foundations</span></h1>
+        <p>Premium fly ash bricks and readymix concrete engineered for roads, buildings and infrastructure across Jayashankar Bhupalpally and Telangana.</p>
+        <div class="hero-btns">
+          <button class="btn-hero" onclick="show('products')">Shop Products →</button>
+          <button class="btn-hero-ghost" onclick="show('contact')">Get a Quote</button>
+        </div>
+      </div>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-item"><div class="stat-num">15+</div><div class="stat-label">Years Experience</div></div>
+      <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Projects Delivered</div></div>
+      <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">Warehouses in Telangana</div></div>
+      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">IS Compliant</div></div>
+    </div>
+    <div class="section">
+      <div class="section-hd">
+        <div class="section-title">Featured Products</div>
+        <button class="see-all" onclick="show('products')">View all products →</button>
+      </div>
+      <div class="products-grid" id="home-grid"></div>
+    </div>
+    <div class="section" style="background:var(--white);border-top:0.5px solid var(--border)">
+      <div class="section-title" style="margin-bottom:18px">Why Choose Balaji?</div>
+      <div class="features-grid">
+        <div class="feature-card"><span class="feat-icon">🏆</span><div class="feat-title">Certified Quality</div><div class="feat-desc">IS 12894 fly ash bricks and IS 4926 readymix concrete. Every batch quality-inspected.</div></div>
+        <div class="feature-card"><span class="feat-icon">🚚</span><div class="feat-title">Fast Delivery</div><div class="feat-desc">On-time dispatch from Burrakayalagudem and Warangal warehouses across Telangana.</div></div>
+        <div class="feature-card"><span class="feat-icon">🌿</span><div class="feat-title">Eco-Friendly</div><div class="feat-desc">Fly ash bricks repurpose industrial waste, reducing landfill and carbon footprint.</div></div>
+        <div class="feature-card"><span class="feat-icon">💰</span><div class="feat-title">Bulk Discounts</div><div class="feat-desc">Volume pricing from 5,000 units. Transparent quotes, zero hidden costs.</div></div>
+      </div>
+    </div>
+    <div class="cta-section">
+      <h2>Ready to Build?</h2>
+      <p>Order online or call us for bulk pricing. We deliver across Telangana.</p>
+      <button class="btn-hero" onclick="show('products')">Order Now →</button>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="page" id="pg-products">
+    <div class="toolbar">
+      <input class="search-box" id="srch" placeholder="Search products…" oninput="filterProds()">
+      <select class="filter-sel" id="cat-sel" onchange="filterProds()">
+        <option value="">All Categories</option>
+        <option value="Fly Ash Bricks">Fly Ash Bricks</option>
+        <option value="Readymix Concrete">Readymix Concrete</option>
+        <option value="Building Materials">Building Materials</option>
+      </select>
+    </div>
+    <div class="products-page-grid" id="prod-grid"></div>
+  </div>
+
+  <!-- CART -->
+  <div class="page" id="pg-cart">
+    <div class="empty-cart" id="empty-c">
+      <div class="empty-icon">🛒</div>
+      <div style="font-weight:700;font-size:16px;color:var(--text)">Your cart is empty</div>
+      <div>Add products to start your order</div>
+      <button class="btn-hero" onclick="show('products')" style="margin-top:8px">Browse Products</button>
+    </div>
+    <div class="cart-wrap" id="cart-full" style="display:none">
+      <div>
+        <div class="cart-title">Cart Items</div>
+        <div class="cart-items" id="cart-list"></div>
+      </div>
+      <div class="order-summary">
+        <div class="summary-title">Order Summary</div>
+        <div class="sum-row"><span>Subtotal</span><span id="s-sub">₹0</span></div>
+        <div class="sum-row"><span>GST (18%)</span><span id="s-tax">₹0</span></div>
+        <div class="coupon-wrap">
+          <input class="coupon-in" id="coupon-in" placeholder="COUPON CODE">
+          <button class="coupon-apply" onclick="applyCoupon()">Apply</button>
+        </div>
+        <div class="discount-row" id="disc-row"><span id="disc-label">Discount</span><span id="s-disc"></span></div>
+        <div class="sum-row total"><span>Total</span><span id="s-tot">₹0</span></div>
+        <button class="checkout-btn" onclick="doCheckout()">Proceed to Checkout →</button>
+        <div class="pay-note">🔒 Secure payment via Razorpay<br>UPI · Cards · Net Banking</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDERS -->
+  <div class="page" id="pg-orders">
+    <div class="orders-wrap">
+      <div class="section-title">My Orders</div>
+      <div class="orders-list" id="orders-list"></div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="page" id="pg-contact">
+    <div class="contact-wrap">
+      <div class="contact-info-cards">
+        <div class="info-card"><div class="info-icon">📍</div><div><div class="info-title">Our Location</div><div class="info-lines">Burrakayalagudem, Ghanpur (M)<br>Jayashankar Bhupalpally<br>Telangana – 506 201</div></div></div>
+        <div class="info-card"><div class="info-icon">📞</div><div><div class="info-title">Call Us</div><div class="info-lines">+91 9000 000 000<br>+91 9000 000 001<br>Mon–Sat: 8AM – 6PM</div></div></div>
+        <div class="info-card"><div class="info-icon">✉️</div><div><div class="info-title">Email Us</div><div class="info-lines">admin@balajibricks.com<br>orders@balajibricks.com</div></div></div>
+        <div class="info-card" style="background:#fef2f2;border-color:rgba(192,57,43,0.2)"><div class="info-icon">💡</div><div><div class="info-title">Bulk Orders</div><div class="info-lines">For orders above ₹50,000 call directly for special pricing and dedicated support.</div></div></div>
+      </div>
+      <div class="contact-form" id="contact-form-wrap">
+        <div class="form-title">Send a Message</div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Your Name *</label><input class="form-input" id="c-name" placeholder="Raju Sharma"></div>
+          <div class="form-group"><label class="form-label">Phone *</label><input class="form-input" id="c-phone" placeholder="9876543210"></div>
+          <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="c-email" type="email" placeholder="you@example.com"></div>
+          <div class="form-group">
+            <label class="form-label">Subject</label>
+            <select class="form-input" id="c-subject">
+              <option>Bulk Order Enquiry</option>
+              <option>Product Information</option>
+              <option>Pricing & Quotation</option>
+              <option>Delivery Query</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group full"><label class="form-label">Message *</label><textarea class="form-input" id="c-msg" placeholder="Tell us about your project, quantity needed, and delivery location…"></textarea></div>
+        </div>
+        <button class="submit-btn" onclick="submitContact()">Send Message →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div class="page" id="pg-admin">
+    <div class="admin-shell">
+      <div class="sidebar">
+        <div class="sidebar-section">Main Menu</div>
+        <button class="sidebar-item active" id="si-dashboard" onclick="adminPage('dashboard',this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard
+        </button>
+        <button class="sidebar-item" id="si-orders" onclick="adminPage('aorders',this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>Orders
+        </button>
+        <button class="sidebar-item" id="si-products" onclick="adminPage('aproducts',this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="14" width="20" height="7" rx="1"/><rect x="2" y="7" width="20" height="6" rx="1"/><rect x="2" y="2" width="20" height="4" rx="1"/></svg>Products
+        </button>
+        <button class="sidebar-item" id="si-inventory" onclick="adminPage('ainventory',this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inventory
+        </button>
+        <button class="sidebar-item" id="si-customers" onclick="adminPage('acustomers',this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Customers
+        </button>
+        <button class="sidebar-item" id="si-coupons" onclick="adminPage('acoupons',this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Coupons
+        </button>
+        <div class="sidebar-bottom">
+          <button class="sidebar-item" onclick="show('home')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>View Store
+          </button>
+        </div>
+      </div>
+      <div class="admin-main">
+        <!-- Dashboard -->
+        <div class="admin-pg active" id="pg-dashboard">
+          <div class="admin-hd"><h2>Dashboard</h2><span style="font-size:12px;color:var(--muted)">April 2025</span></div>
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-label">Total Revenue</div><div class="kpi-value">₹4.82L</div><div class="kpi-trend up">↑ 12.4% vs last month</div></div>
+            <div class="kpi"><div class="kpi-label">Orders This Month</div><div class="kpi-value">164</div><div class="kpi-trend up">↑ 8.1% vs last month</div></div>
+            <div class="kpi"><div class="kpi-label">Total Customers</div><div class="kpi-value">47</div><div class="kpi-trend" style="color:var(--muted)">+6 new this month</div></div>
+            <div class="kpi"><div class="kpi-label">Low Stock Alerts</div><div class="kpi-value down">3</div><div class="kpi-trend down">Items need restocking</div></div>
+          </div>
+          <div class="charts-row">
+            <div class="chart-card">
+              <div class="chart-card-title">Monthly Revenue (₹ thousands)</div>
+              <div class="bar-chart" id="rev-chart"></div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-card-title">Orders by Status</div>
+              <div class="legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#15803d"></div><span>Delivered — 98 (60%)</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#1d4ed8"></div><span>Confirmed — 32 (20%)</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#854d0e"></div><span>Dispatched — 22 (13%)</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#6b7280"></div><span>Pending — 12 (7%)</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="data-table">
+            <div class="table-header" style="grid-template-columns:1.4fr 1fr 1fr 90px 80px"><span>Order #</span><span>Customer</span><span>Amount</span><span>Status</span><span>Date</span></div>
+            <div class="table-row" style="grid-template-columns:1.4fr 1fr 1fr 90px 80px" onclick="openOrderModal('BRB250401','Raju Sharma','₹47,600','Delivered')"><span style="font-family:monospace;font-weight:700">BRB250401</span><span>Raju Sharma</span><span style="font-weight:700">₹47,600</span><span><span class="status-pill s-delivered">● Delivered</span></span><span style="color:var(--muted)">Apr 1</span></div>
+            <div class="table-row" style="grid-template-columns:1.4fr 1fr 1fr 90px 80px" onclick="openOrderModal('BRB250402','Priya Reddy','₹66,940','Dispatched')"><span style="font-family:monospace;font-weight:700">BRB250402</span><span>Priya Reddy</span><span style="font-weight:700">₹66,940</span><span><span class="status-pill s-dispatched">● Dispatched</span></span><span style="color:var(--muted)">Apr 2</span></div>
+            <div class="table-row" style="grid-template-columns:1.4fr 1fr 1fr 90px 80px" onclick="openOrderModal('BRB250403','Suresh Kumar','₹1,23,400','Confirmed')"><span style="font-family:monospace;font-weight:700">BRB250403</span><span>Suresh Kumar</span><span style="font-weight:700">₹1,23,400</span><span><span class="status-pill s-confirmed">● Confirmed</span></span><span style="color:var(--muted)">Apr 4</span></div>
+            <div class="table-row" style="grid-template-columns:1.4fr 1fr 1fr 90px 80px" onclick="openOrderModal('BRB250404','Anjali Verma','₹28,750','Pending')"><span style="font-family:monospace;font-weight:700">BRB250404</span><span>Anjali Verma</span><span style="font-weight:700">₹28,750</span><span><span class="status-pill s-pending">● Pending</span></span><span style="color:var(--muted)">Apr 5</span></div>
+            <div class="table-row" style="grid-template-columns:1.4fr 1fr 1fr 90px 80px" onclick="openOrderModal('BRB250405','Ramesh Yadav','₹89,200','Delivered')"><span style="font-family:monospace;font-weight:700">BRB250405</span><span>Ramesh Yadav</span><span style="font-weight:700">₹89,200</span><span><span class="status-pill s-delivered">● Delivered</span></span><span style="color:var(--muted)">Apr 6</span></div>
+          </div>
+        </div>
+
+        <!-- Orders -->
+        <div class="admin-pg" id="pg-aorders">
+          <div class="admin-hd"><h2>Orders</h2></div>
+          <div style="display:flex;gap:10px;margin-bottom:16px">
+            <input class="search-box" style="max-width:260px" placeholder="Search order # or customer…">
+            <select class="filter-sel"><option>All Statuses</option><option>Pending</option><option>Confirmed</option><option>Dispatched</option><option>Delivered</option><option>Cancelled</option></select>
+          </div>
+          <div class="data-table">
+            <div class="table-header" style="grid-template-columns:1.3fr 1fr 1fr 100px 80px 60px"><span>Order #</span><span>Customer</span><span>Amount</span><span>Status</span><span>Date</span><span>Action</span></div>
+            <div id="a-orders-body"></div>
+          </div>
+        </div>
+
+        <!-- Products -->
+        <div class="admin-pg" id="pg-aproducts">
+          <div class="admin-hd"><h2>Products</h2><button class="admin-action-btn" onclick="toast('Product form — connect to backend to save new products')">+ Add Product</button></div>
+          <div class="data-table">
+            <div class="table-header" style="grid-template-columns:2fr 1.2fr 1fr 1fr 70px"><span>Product</span><span>Category</span><span>Price</span><span>Stock</span><span>Status</span></div>
+            <div id="a-products-body"></div>
+          </div>
+        </div>
+
+        <!-- Inventory -->
+        <div class="admin-pg" id="pg-ainventory">
+          <div class="admin-hd"><h2>Inventory</h2><button class="admin-action-btn" onclick="openStockModal()">Update Stock</button></div>
+          <div style="background:#fef2f2;border:0.5px solid rgba(192,57,43,0.25);border-radius:var(--radius);padding:12px 16px;margin-bottom:18px;font-size:13px;color:#991b1b;display:flex;align-items:center;gap:8px">
+            <span style="font-size:16px">⚠️</span> 3 products are below reorder level — M20 Concrete, River Sand, Coarse Aggregate 20mm
+          </div>
+          <div class="inv-grid" id="inv-grid"></div>
+        </div>
+
+        <!-- Customers -->
+        <div class="admin-pg" id="pg-acustomers">
+          <div class="admin-hd"><h2>Customers</h2></div>
+          <div class="data-table">
+            <div class="table-header" style="grid-template-columns:1.5fr 1fr 80px 1fr 80px"><span>Name</span><span>Contact</span><span>Orders</span><span>Total Spent</span><span>Status</span></div>
+            <div id="a-customers-body"></div>
+          </div>
+        </div>
+
+        <!-- Coupons -->
+        <div class="admin-pg" id="pg-acoupons">
+          <div class="admin-hd"><h2>Coupons</h2><button class="admin-action-btn" onclick="toast('Coupon form — connect to backend to create coupons')">+ Create Coupon</button></div>
+          <div class="data-table">
+            <div class="table-header" style="grid-template-columns:1fr 1fr 1fr 80px 1fr 70px"><span>Code</span><span>Type</span><span>Value</span><span>Uses</span><span>Valid Until</span><span>Status</span></div>
+            <div>
+              <div class="table-row" style="grid-template-columns:1fr 1fr 1fr 80px 1fr 70px"><span style="font-family:monospace;font-weight:700;background:#f3f4f6;padding:2px 8px;border-radius:4px">WELCOME10</span><span>Percentage</span><span>10% off</span><span>234/1000</span><span>Dec 31, 2025</span><span><span class="status-pill s-delivered">Active</span></span></div>
+              <div class="table-row" style="grid-template-columns:1fr 1fr 1fr 80px 1fr 70px"><span style="font-family:monospace;font-weight:700;background:#f3f4f6;padding:2px 8px;border-radius:4px">BULK2024</span><span>Flat</span><span>₹1,500 off</span><span>89/500</span><span>Jun 30, 2025</span><span><span class="status-pill s-delivered">Active</span></span></div>
+              <div class="table-row" style="grid-template-columns:1fr 1fr 1fr 80px 1fr 70px"><span style="font-family:monospace;font-weight:700;background:#f3f4f6;padding:2px 8px;border-radius:4px">ROAD15</span><span>Percentage</span><span>15% off</span><span>12/200</span><span>Sep 30, 2025</span><span><span class="status-pill s-delivered">Active</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS SCREEN (checkout) -->
+  <div class="page" id="pg-success">
+    <div class="success-screen">
+      <div class="success-icon">✅</div>
+      <h2 style="font-size:26px;font-weight:800;margin-bottom:8px">Order Placed!</h2>
+      <p style="color:var(--muted);max-width:360px;margin-bottom:6px">Your order has been confirmed and payment received.</p>
+      <p id="success-order-num" style="font-family:monospace;font-size:18px;font-weight:800;color:var(--brick);margin-bottom:28px"></p>
+      <div style="display:flex;gap:12px">
+        <button class="btn-hero" onclick="show('orders')">View Orders</button>
+        <button class="btn-hero-ghost" style="color:var(--text);border-color:var(--border)" onclick="show('products')">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="order-modal">
+  <div class="modal-box">
+    <div class="modal-head"><span id="m-order-title">Order Detail</span><button class="modal-close" onclick="closeModal('order-modal')">×</button></div>
+    <div class="modal-body">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:14px" id="m-order-sub"></div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label class="form-label">Update Status</label>
+        <select class="form-input" id="m-status">
+          <option>Pending</option><option>Confirmed</option><option>Processing</option>
+          <option>Dispatched</option><option>Delivered</option><option>Cancelled</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Admin Notes</label>
+        <input class="form-input" placeholder="Internal notes about this order…">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('order-modal')">Cancel</button>
+      <button class="btn-confirm" onclick="saveOrder()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="stock-modal">
+  <div class="modal-box">
+    <div class="modal-head">Update Stock<button class="modal-close" onclick="closeModal('stock-modal')">×</button></div>
+    <div class="modal-body">
+      <div class="form-group" style="margin-bottom:12px">
+        <label class="form-label">Product</label>
+        <select class="form-input" id="stock-prod"></select>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label class="form-label">Warehouse</label>
+        <select class="form-input"><option>Burrakayalagudem Main</option><option>Warangal Distribution</option></select>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label class="form-label">Movement Type</label>
+        <select class="form-input"><option>IN — Stock received</option><option>OUT — Stock issued</option><option>ADJUSTMENT — Set quantity</option></select>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label class="form-label">Quantity</label>
+        <input class="form-input" type="number" placeholder="e.g. 5000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Reason</label>
+        <input class="form-input" placeholder="e.g. New batch received from supplier">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('stock-modal')">Cancel</button>
+      <button class="btn-confirm" onclick="saveStock()">Update Stock</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast-el"></div>
+
+<script>
+const INR = n => '₹' + Math.round(n).toLocaleString('en-IN');
+
+const PRODUCTS = [
+  {id:1,name:'Standard Fly Ash Brick',cat:'Fly Ash Bricks',desc:'IS 12894 compliant, 230×110×75mm. Compressive strength 7.5–10 N/mm². Superior thermal insulation.',price:8.5,unit:'brick',min:500,bulk:5000,bulkPct:10,img:'bricks',featured:true,stock:150000},
+  {id:2,name:'Hollow Fly Ash Brick',cat:'Fly Ash Bricks',desc:'Lightweight hollow design, 25% lighter than solid bricks. Excellent insulation properties.',price:12,unit:'brick',min:250,bulk:2500,bulkPct:8,img:'bricks',featured:false,stock:50000},
+  {id:3,name:'Readymix Concrete M20',cat:'Readymix Concrete',desc:'20 MPa, IS 4926 compliant. Delivered ready-to-pour for slabs, beams and residential structures.',price:5800,unit:'m³',min:1,bulk:10,bulkPct:5,img:'concrete',featured:true,stock:200},
+  {id:4,name:'Readymix Concrete M25',cat:'Readymix Concrete',desc:'25 MPa high strength. Ideal for commercial buildings, heavy structures and bridges.',price:6500,unit:'m³',min:1,bulk:15,bulkPct:7,img:'concrete',featured:false,stock:150},
+  {id:5,name:'Road Concrete M30',cat:'Readymix Concrete',desc:'IRC compliant rigid pavement mix. High flexural strength for roads, highways and airfields.',price:7200,unit:'m³',min:5,bulk:50,bulkPct:8,img:'concrete',featured:true,stock:300},
+  {id:6,name:'River Sand (M-Sand)',cat:'Building Materials',desc:'IS 383 Zone II washed manufactured sand. Silt content < 3%. All concrete and mortar work.',price:1800,unit:'ton',min:1,bulk:20,bulkPct:5,img:'materials',featured:false,stock:8},
+  {id:7,name:'Coarse Aggregate 20mm',cat:'Building Materials',desc:'Crushed granite, flakiness < 30%. IS 383 compliant. All structural concrete applications.',price:1400,unit:'ton',min:2,bulk:25,bulkPct:6,img:'materials',featured:false,stock:12},
+];
+
+const INVENTORY = [
+  {name:'Standard Fly Ash Brick',avail:150000,reserved:12000,reorder:10000,wh:'Burrakayalagudem'},
+  {name:'Hollow Fly Ash Brick',avail:50000,reserved:5000,reorder:5000,wh:'Burrakayalagudem'},
+  {name:'Readymix Concrete M20',avail:200,reserved:30,reorder:20,wh:'Both Warehouses'},
+  {name:'Readymix Concrete M25',avail:150,reserved:20,reorder:15,wh:'Warangal'},
+  {name:'Road Concrete M30',avail:300,reserved:50,reorder:30,wh:'Burrakayalagudem'},
+  {name:'River Sand (M-Sand)',avail:8,reserved:2,reorder:50,wh:'Warangal'},
+  {name:'Coarse Aggregate 20mm',avail:12,reserved:3,reorder:80,wh:'Warangal'},
+];
+
+const ORDERS_DATA = [
+  {num:'BRB250401',customer:'Raju Sharma',amt:'₹47,600',status:'Delivered',date:'Apr 1'},
+  {num:'BRB250402',customer:'Priya Reddy',amt:'₹66,940',status:'Dispatched',date:'Apr 2'},
+  {num:'BRB250403',customer:'Suresh Kumar',amt:'₹1,23,400',status:'Confirmed',date:'Apr 4'},
+  {num:'BRB250404',customer:'Anjali Verma',amt:'₹28,750',status:'Pending',date:'Apr 5'},
+  {num:'BRB250405',customer:'Ramesh Yadav',amt:'₹89,200',status:'Delivered',date:'Apr 6'},
+  {num:'BRB250406',customer:'Geetha Lakshmi',amt:'₹35,100',status:'Confirmed',date:'Apr 7'},
+];
+
+const CUSTOMERS = [
+  {name:'Raju Sharma',email:'raju@example.com',phone:'9876543210',orders:4,spent:'₹1,84,600',status:'Active'},
+  {name:'Priya Reddy',email:'priya@example.com',phone:'9876543211',orders:2,spent:'₹66,940',status:'Active'},
+  {name:'Suresh Kumar',email:'suresh@example.com',phone:'9876543212',orders:6,spent:'₹4,23,800',status:'Active'},
+  {name:'Anjali Verma',email:'anjali@example.com',phone:'9876543213',orders:1,spent:'₹28,750',status:'Active'},
+];
+
+let cart = {};
+let discount = 0;
+let placedOrders = [];
+
+function statusClass(s){return({Delivered:'s-delivered',Dispatched:'s-dispatched',Confirmed:'s-confirmed',Pending:'s-pending',Cancelled:'s-cancelled'})[s]||'s-pending'}
+
+function prodCard(p){
+  const gwt = p.price*1.18;
+  return `<div class="product-card">
+    <div class="prod-img ${p.img}">
+      ${p.featured?'<div class="prod-badge">⚡ Featured</div>':''}
+      <span style="font-size:48px">${p.img==='bricks'?'🧱':p.img==='concrete'?'🏗️':'⛏️'}</span>
+    </div>
+    <div class="prod-body">
+      <div class="prod-cat">${p.cat}</div>
+      <div class="prod-name">${p.name}</div>
+      <div class="prod-desc">${p.desc}</div>
+      <div class="prod-footer">
+        <div>
+          <div class="prod-price">${INR(gwt)} <span class="prod-unit">/${p.unit}</span></div>
+          <div class="prod-min">Min: ${p.min.toLocaleString('en-IN')} ${p.unit}s${p.bulk?` · Bulk ${p.bulkPct}% off @${p.bulk.toLocaleString('en-IN')}`:''}</div>
+        </div>
+        <button class="add-btn" onclick="addCart(${p.id})">+ Add</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderHomeGrid(){
+  document.getElementById('home-grid').innerHTML = PRODUCTS.filter(p=>p.featured).map(p=>prodCard(p)).join('');
+}
+
+function filterProds(){
+  const q = document.getElementById('srch').value.toLowerCase();
+  const cat = document.getElementById('cat-sel').value;
+  const filtered = PRODUCTS.filter(p=>(!q||p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q))&&(!cat||p.cat===cat));
+  document.getElementById('prod-grid').innerHTML = filtered.length ? filtered.map(p=>prodCard(p)).join('') : '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">No products found</div>';
+}
+
+function addCart(id){
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(!cart[id]) cart[id]={p,qty:p.min};
+  else cart[id].qty+=p.min;
+  updateBadge();
+  toast(`Added ${p.min.toLocaleString('en-IN')} ${p.unit}(s) — ${p.name}`);
+}
+
+function updateBadge(){
+  const total = Object.values(cart).reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cart-count').textContent = total > 999 ? '999+' : total;
+}
+
+function renderCart(){
+  const items = Object.values(cart);
+  const empty = document.getElementById('empty-c');
+  const full = document.getElementById('cart-full');
+  if(!items.length){empty.style.display='flex';full.style.display='none';return;}
+  empty.style.display='none'; full.style.display='grid';
+
+  document.getElementById('cart-list').innerHTML = items.map(({p,qty})=>{
+    const bulk = p.bulk && p.bulkPct && qty>=p.bulk;
+    const ep = bulk ? p.price*(1-p.bulkPct/100) : p.price;
+    const lineTotal = ep*qty*1.18;
+    return `<div class="cart-item">
+      <div class="ci-img ${p.img}">${p.img==='bricks'?'🧱':p.img==='concrete'?'🏗️':'⛏️'}</div>
+      <div class="ci-info">
+        <div class="ci-name">${p.name}</div>
+        <div class="ci-price">${INR(ep*1.18)} per ${p.unit}</div>
+        ${bulk?`<div class="ci-bulk">✓ ${p.bulkPct}% bulk discount applied</div>`:''}
+      </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="chgQty(${p.id},-${p.min})">−</button>
+        <div class="qty-val">${qty.toLocaleString('en-IN')}</div>
+        <button class="qty-btn" onclick="chgQty(${p.id},${p.min})">+</button>
+      </div>
+      <div class="ci-total">
+        <div class="ci-total-amt">${INR(lineTotal)}</div>
+        <button class="remove-btn" onclick="remItem(${p.id})">Remove</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  recalc();
+}
+
+function chgQty(id,d){
+  if(!cart[id])return;
+  cart[id].qty=Math.max(cart[id].p.min,cart[id].qty+d);
+  updateBadge(); renderCart();
+}
+function remItem(id){delete cart[id];updateBadge();renderCart();toast('Item removed');}
+
+function recalc(){
+  const items=Object.values(cart);
+  const sub=items.reduce((s,{p,qty})=>{const bulk=p.bulk&&p.bulkPct&&qty>=p.bulk;const ep=bulk?p.price*(1-p.bulkPct/100):p.price;return s+ep*qty;},0);
+  const tax=sub*0.18; const total=sub+tax-discount;
+  document.getElementById('s-sub').textContent=INR(sub);
+  document.getElementById('s-tax').textContent=INR(tax);
+  document.getElementById('s-tot').textContent=INR(Math.max(0,total));
+}
+
+function applyCoupon(){
+  const code=document.getElementById('coupon-in').value.trim().toUpperCase();
+  const items=Object.values(cart);
+  const sub=items.reduce((s,{p,qty})=>s+p.price*qty,0)*1.18;
+  const coupons={WELCOME10:{pct:10,min:5000},BULK2024:{flat:1500,min:25000},ROAD15:{pct:15,min:50000}};
+  if(!coupons[code]){toast('Invalid coupon code');return;}
+  const c=coupons[code];
+  if(sub<c.min){toast(`Minimum order ${INR(c.min)} required for ${code}`);return;}
+  discount=c.flat||sub*(c.pct/100);
+  const dr=document.getElementById('disc-row');
+  dr.style.display='flex';
+  document.getElementById('disc-label').textContent=`Discount (${code})`;
+  document.getElementById('s-disc').textContent='− '+INR(discount);
+  recalc(); toast(`✓ Coupon ${code} applied!`);
+}
+
+function doCheckout(){
+  if(!Object.keys(cart).length){toast('Cart is empty');return;}
+  const num='BRB'+Date.now().toString().slice(-8);
+  const total=Object.values(cart).reduce((s,{p,qty})=>s+p.price*qty*1.18,0)-discount;
+  placedOrders.unshift({num,items:Object.values(cart).map(({p,qty})=>({name:p.name,qty,unit:p.unit})),total,date:new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short'}),status:'Confirmed'});
+  document.getElementById('success-order-num').textContent=num;
+  cart={}; discount=0; document.getElementById('coupon-in').value='';
+  document.getElementById('disc-row').style.display='none';
+  updateBadge(); show('success');
+}
+
+function renderOrders(){
+  const all=[...placedOrders,...ORDERS_DATA.map(o=>({num:o.num,items:[{name:'5,000 Standard Fly Ash Bricks',qty:5000,unit:'brick'}],total:parseInt(o.amt.replace(/[₹,]/g,'')),date:o.date,status:o.status}))];
+  document.getElementById('orders-list').innerHTML = all.map(o=>`<div class="order-card">
+    <div class="order-top">
+      <div><div class="order-num">${o.num}</div><div class="order-date">${o.date}</div></div>
+      <span class="status-pill ${statusClass(o.status)}">● ${o.status}</span>
+    </div>
+    <div class="order-items-preview">${o.items.map(i=>`${i.name} × ${typeof i.qty==='number'?i.qty.toLocaleString('en-IN'):i.qty} ${i.unit||''}`).join(', ')}</div>
+    <div class="order-bottom">
+      <div class="order-total">${typeof o.total==='number'?INR(o.total):o.total}</div>
+      <button style="background:none;border:0.5px solid var(--border);border-radius:7px;padding:6px 14px;cursor:pointer;font-size:12px;font-weight:600" onclick="toast('Track your order — connect to backend for live tracking')">Track Order →</button>
+    </div>
+  </div>`).join('');
+}
+
+function submitContact(){
+  const name=document.getElementById('c-name').value.trim();
+  const phone=document.getElementById('c-phone').value.trim();
+  const msg=document.getElementById('c-msg').value.trim();
+  if(!name||!phone||!msg){toast('Please fill Name, Phone and Message');return;}
+  document.getElementById('contact-form-wrap').innerHTML=`<div style="text-align:center;padding:48px 20px"><div style="font-size:56px;margin-bottom:16px">✅</div><div style="font-size:20px;font-weight:800;margin-bottom:8px">Message Sent!</div><div style="color:var(--muted);font-size:14px;margin-bottom:24px">Our team will contact you within 24 hours.</div><button class="btn-hero" onclick="show('home')">Back to Home</button></div>`;
+}
+
+function renderRevenueChart(){
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const vals=[28,35,42,48,38,55,61,44,52,58,47,65];
+  const max=Math.max(...vals);
+  document.getElementById('rev-chart').innerHTML=months.map((m,i)=>`<div class="bc-wrap"><div class="bc-bar" style="height:${Math.round((vals[i]/max)*88)}px"></div><div class="bc-label">${m}</div></div>`).join('');
+}
+
+function renderAdminOrders(){
+  document.getElementById('a-orders-body').innerHTML=ORDERS_DATA.map(o=>`<div class="table-row" style="grid-template-columns:1.3fr 1fr 1fr 100px 80px 60px" onclick="openOrderModal('${o.num}','${o.customer}','${o.amt}','${o.status}')"><span style="font-family:monospace;font-weight:700">${o.num}</span><span>${o.customer}</span><span style="font-weight:700">${o.amt}</span><span><span class="status-pill ${statusClass(o.status)}">● ${o.status}</span></span><span style="color:var(--muted)">${o.date}</span><span style="color:var(--brick);font-weight:600;font-size:12px">View</span></div>`).join('');
+}
+
+function renderAdminProducts(){
+  document.getElementById('a-products-body').innerHTML=PRODUCTS.map(p=>`<div class="table-row" style="grid-template-columns:2fr 1.2fr 1fr 1fr 70px"><span style="font-weight:600">${p.img==='bricks'?'🧱':p.img==='concrete'?'🏗️':'⛏️'} ${p.name}</span><span style="color:var(--muted)">${p.cat}</span><span style="font-weight:700">${INR(p.price)}/${p.unit}</span><span style="font-weight:700;color:${p.stock<50?'#b91c1c':p.stock<200?'#854d0e':'#15803d'}">${p.stock.toLocaleString('en-IN')}</span><span><span class="status-pill s-delivered">Active</span></span></div>`).join('');
+}
+
+function renderInventory(){
+  document.getElementById('inv-grid').innerHTML=INVENTORY.map(inv=>{
+    const low=inv.avail<=inv.reorder;
+    const pct=Math.min(100,Math.round((inv.avail/(Math.max(inv.reorder,inv.avail))*100)));
+    return `<div class="inv-card${low?' low':''}">
+      <div class="inv-name">${inv.name}${low?' <span style="color:#b91c1c;font-size:11px;font-weight:700">⚠ LOW</span>':''}</div>
+      <div class="inv-wh">📍 ${inv.wh}</div>
+      <div class="inv-stat"><span class="inv-stat-label">Available</span><span class="inv-stat-val" style="color:${low?'#b91c1c':'#15803d'}">${inv.avail.toLocaleString('en-IN')}</span></div>
+      <div class="inv-stat"><span class="inv-stat-label">Reserved</span><span class="inv-stat-val">${inv.reserved.toLocaleString('en-IN')}</span></div>
+      <div class="inv-stat"><span class="inv-stat-label">Reorder Level</span><span class="inv-stat-val">${inv.reorder.toLocaleString('en-IN')}</span></div>
+      <div class="progress"><div class="progress-fill" style="width:${pct}%;background:${low?'#b91c1c':'var(--brick)'}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderCustomers(){
+  document.getElementById('a-customers-body').innerHTML=CUSTOMERS.map(c=>`<div class="table-row" style="grid-template-columns:1.5fr 1fr 80px 1fr 80px"><div><div style="font-weight:700">${c.name}</div><div style="font-size:11px;color:var(--muted)">${c.email}</div></div><div style="font-size:13px;color:var(--muted)">${c.phone}</div><div style="font-weight:700;text-align:center">${c.orders}</div><div style="font-weight:700;color:#15803d">${c.spent}</div><span><span class="status-pill s-delivered">${c.status}</span></span></div>`).join('');
+}
+
+function populateStockSelect(){
+  document.getElementById('stock-prod').innerHTML=PRODUCTS.map(p=>`<option>${p.name}</option>`).join('');
+}
+
+function show(pg){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+  document.getElementById('pg-'+pg).classList.add('active');
+  const nl=document.getElementById('nl-'+pg);
+  if(nl) nl.classList.add('active');
+  if(pg==='cart') renderCart();
+  if(pg==='products'){document.getElementById('prod-grid').innerHTML=PRODUCTS.map(p=>prodCard(p)).join('');}
+  if(pg==='orders') renderOrders();
+  if(pg==='admin'){renderRevenueChart();renderAdminOrders();renderAdminProducts();renderInventory();renderCustomers();}
+}
+
+function adminPage(tab, el){
+  document.querySelectorAll('.admin-pg').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById('pg-'+tab).classList.add('active');
+  el.classList.add('active');
+}
+
+function openOrderModal(num,customer,amt,status){
+  document.getElementById('m-order-title').textContent=num+' — '+customer;
+  document.getElementById('m-order-sub').textContent=amt+' · '+status;
+  document.getElementById('m-status').value=status;
+  document.getElementById('order-modal').classList.add('open');
+}
+
+function saveOrder(){
+  const s=document.getElementById('m-status').value;
+  closeModal('order-modal');
+  toast('Order status updated to: '+s);
+}
+
+function openStockModal(){document.getElementById('stock-modal').classList.add('open');}
+function saveStock(){closeModal('stock-modal');toast('Stock updated successfully');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+let toastT;
+function toast(msg){
+  const el=document.getElementById('toast-el');
+  el.textContent=msg; el.classList.add('visible');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>el.classList.remove('visible'),3200);
+}
+
+// Init
+renderHomeGrid();
+populateStockSelect();
+</script>
+</body>
+</html>
