@@ -304,7 +304,7 @@ textarea.form-input{resize:vertical;min-height:90px}
     </div>
     <div class="stats-bar">
       <div class="stat-item"><div class="stat-num">15+</div><div class="stat-label">Years Experience</div></div>
-      <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Projects  Delivered</div></div>
+      <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Projects Delivered</div></div>
       <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">Warehouses in Telangana</div></div>
       <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">IS Compliant</div></div>
     </div>
@@ -536,4 +536,353 @@ textarea.form-input{resize:vertical;min-height:90px}
 
   <!-- SUCCESS SCREEN (checkout) -->
   <div class="page" id="pg-success">
-    <div class="success-s
+    <div class="success-screen">
+      <div class="success-icon">✅</div>
+      <h2 style="font-size:26px;font-weight:800;margin-bottom:8px">Order Placed!</h2>
+      <p style="color:var(--muted);max-width:360px;margin-bottom:6px">Your order has been confirmed and payment received.</p>
+      <p id="success-order-num" style="font-family:monospace;font-size:18px;font-weight:800;color:var(--brick);margin-bottom:28px"></p>
+      <div style="display:flex;gap:12px">
+        <button class="btn-hero" onclick="show('orders')">View Orders</button>
+        <button class="btn-hero-ghost" style="color:var(--text);border-color:var(--border)" onclick="show('products')">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="order-modal">
+  <div class="modal-box">
+    <div class="modal-head"><span id="m-order-title">Order Detail</span><button class="modal-close" onclick="closeModal('order-modal')">×</button></div>
+    <div class="modal-body">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:14px" id="m-order-sub"></div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label class="form-label">Update Status</label>
+        <select class="form-input" id="m-status">
+          <option>Pending</option><option>Confirmed</option><option>Processing</option>
+          <option>Dispatched</option><option>Delivered</option><option>Cancelled</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Admin Notes</label>
+        <input class="form-input" placeholder="Internal notes about this order…">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('order-modal')">Cancel</button>
+      <button class="btn-confirm" onclick="saveOrder()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="stock-modal">
+  <div class="modal-box">
+    <div class="modal-head">Update Stock<button class="modal-close" onclick="closeModal('stock-modal')">×</button></div>
+    <div class="modal-body">
+      <div class="form-group" style="margin-bottom:12px">
+        <label class="form-label">Product</label>
+        <select class="form-input" id="stock-prod"></select>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label class="form-label">Warehouse</label>
+        <select class="form-input"><option>Burrakayalagudem Main</option><option>Warangal Distribution</option></select>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label class="form-label">Movement Type</label>
+        <select class="form-input"><option>IN — Stock received</option><option>OUT — Stock issued</option><option>ADJUSTMENT — Set quantity</option></select>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label class="form-label">Quantity</label>
+        <input class="form-input" type="number" placeholder="e.g. 5000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Reason</label>
+        <input class="form-input" placeholder="e.g. New batch received from supplier">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('stock-modal')">Cancel</button>
+      <button class="btn-confirm" onclick="saveStock()">Update Stock</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast-el"></div>
+
+<script>
+const INR = n => '₹' + Math.round(n).toLocaleString('en-IN');
+
+const PRODUCTS = [
+  {id:1,name:'Standard Fly Ash Brick',cat:'Fly Ash Bricks',desc:'IS 12894 compliant, 230×110×75mm. Compressive strength 7.5–10 N/mm². Superior thermal insulation.',price:8.5,unit:'brick',min:500,bulk:5000,bulkPct:10,img:'bricks',featured:true,stock:150000},
+  {id:2,name:'Hollow Fly Ash Brick',cat:'Fly Ash Bricks',desc:'Lightweight hollow design, 25% lighter than solid bricks. Excellent insulation properties.',price:12,unit:'brick',min:250,bulk:2500,bulkPct:8,img:'bricks',featured:false,stock:50000},
+  {id:3,name:'Readymix Concrete M20',cat:'Readymix Concrete',desc:'20 MPa, IS 4926 compliant. Delivered ready-to-pour for slabs, beams and residential structures.',price:5800,unit:'m³',min:1,bulk:10,bulkPct:5,img:'concrete',featured:true,stock:200},
+  {id:4,name:'Readymix Concrete M25',cat:'Readymix Concrete',desc:'25 MPa high strength. Ideal for commercial buildings, heavy structures and bridges.',price:6500,unit:'m³',min:1,bulk:15,bulkPct:7,img:'concrete',featured:false,stock:150},
+  {id:5,name:'Road Concrete M30',cat:'Readymix Concrete',desc:'IRC compliant rigid pavement mix. High flexural strength for roads, highways and airfields.',price:7200,unit:'m³',min:5,bulk:50,bulkPct:8,img:'concrete',featured:true,stock:300},
+  {id:6,name:'River Sand (M-Sand)',cat:'Building Materials',desc:'IS 383 Zone II washed manufactured sand. Silt content < 3%. All concrete and mortar work.',price:1800,unit:'ton',min:1,bulk:20,bulkPct:5,img:'materials',featured:false,stock:8},
+  {id:7,name:'Coarse Aggregate 20mm',cat:'Building Materials',desc:'Crushed granite, flakiness < 30%. IS 383 compliant. All structural concrete applications.',price:1400,unit:'ton',min:2,bulk:25,bulkPct:6,img:'materials',featured:false,stock:12},
+];
+
+const INVENTORY = [
+  {name:'Standard Fly Ash Brick',avail:150000,reserved:12000,reorder:10000,wh:'Burrakayalagudem'},
+  {name:'Hollow Fly Ash Brick',avail:50000,reserved:5000,reorder:5000,wh:'Burrakayalagudem'},
+  {name:'Readymix Concrete M20',avail:200,reserved:30,reorder:20,wh:'Both Warehouses'},
+  {name:'Readymix Concrete M25',avail:150,reserved:20,reorder:15,wh:'Warangal'},
+  {name:'Road Concrete M30',avail:300,reserved:50,reorder:30,wh:'Burrakayalagudem'},
+  {name:'River Sand (M-Sand)',avail:8,reserved:2,reorder:50,wh:'Warangal'},
+  {name:'Coarse Aggregate 20mm',avail:12,reserved:3,reorder:80,wh:'Warangal'},
+];
+
+const ORDERS_DATA = [
+  {num:'BRB250401',customer:'Raju Sharma',amt:'₹47,600',status:'Delivered',date:'Apr 1'},
+  {num:'BRB250402',customer:'Priya Reddy',amt:'₹66,940',status:'Dispatched',date:'Apr 2'},
+  {num:'BRB250403',customer:'Suresh Kumar',amt:'₹1,23,400',status:'Confirmed',date:'Apr 4'},
+  {num:'BRB250404',customer:'Anjali Verma',amt:'₹28,750',status:'Pending',date:'Apr 5'},
+  {num:'BRB250405',customer:'Ramesh Yadav',amt:'₹89,200',status:'Delivered',date:'Apr 6'},
+  {num:'BRB250406',customer:'Geetha Lakshmi',amt:'₹35,100',status:'Confirmed',date:'Apr 7'},
+];
+
+const CUSTOMERS = [
+  {name:'Raju Sharma',email:'raju@example.com',phone:'9876543210',orders:4,spent:'₹1,84,600',status:'Active'},
+  {name:'Priya Reddy',email:'priya@example.com',phone:'9876543211',orders:2,spent:'₹66,940',status:'Active'},
+  {name:'Suresh Kumar',email:'suresh@example.com',phone:'9876543212',orders:6,spent:'₹4,23,800',status:'Active'},
+  {name:'Anjali Verma',email:'anjali@example.com',phone:'9876543213',orders:1,spent:'₹28,750',status:'Active'},
+];
+
+let cart = {};
+let discount = 0;
+let placedOrders = [];
+
+function statusClass(s){return({Delivered:'s-delivered',Dispatched:'s-dispatched',Confirmed:'s-confirmed',Pending:'s-pending',Cancelled:'s-cancelled'})[s]||'s-pending'}
+
+function prodCard(p){
+  const gwt = p.price*1.18;
+  return `<div class="product-card">
+    <div class="prod-img ${p.img}">
+      ${p.featured?'<div class="prod-badge">⚡ Featured</div>':''}
+      <span style="font-size:48px">${p.img==='bricks'?'🧱':p.img==='concrete'?'🏗️':'⛏️'}</span>
+    </div>
+    <div class="prod-body">
+      <div class="prod-cat">${p.cat}</div>
+      <div class="prod-name">${p.name}</div>
+      <div class="prod-desc">${p.desc}</div>
+      <div class="prod-footer">
+        <div>
+          <div class="prod-price">${INR(gwt)} <span class="prod-unit">/${p.unit}</span></div>
+          <div class="prod-min">Min: ${p.min.toLocaleString('en-IN')} ${p.unit}s${p.bulk?` · Bulk ${p.bulkPct}% off @${p.bulk.toLocaleString('en-IN')}`:''}</div>
+        </div>
+        <button class="add-btn" onclick="addCart(${p.id})">+ Add</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderHomeGrid(){
+  document.getElementById('home-grid').innerHTML = PRODUCTS.filter(p=>p.featured).map(p=>prodCard(p)).join('');
+}
+
+function filterProds(){
+  const q = document.getElementById('srch').value.toLowerCase();
+  const cat = document.getElementById('cat-sel').value;
+  const filtered = PRODUCTS.filter(p=>(!q||p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q))&&(!cat||p.cat===cat));
+  document.getElementById('prod-grid').innerHTML = filtered.length ? filtered.map(p=>prodCard(p)).join('') : '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">No products found</div>';
+}
+
+function addCart(id){
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(!cart[id]) cart[id]={p,qty:p.min};
+  else cart[id].qty+=p.min;
+  updateBadge();
+  toast(`Added ${p.min.toLocaleString('en-IN')} ${p.unit}(s) — ${p.name}`);
+}
+
+function updateBadge(){
+  const total = Object.values(cart).reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cart-count').textContent = total > 999 ? '999+' : total;
+}
+
+function renderCart(){
+  const items = Object.values(cart);
+  const empty = document.getElementById('empty-c');
+  const full = document.getElementById('cart-full');
+  if(!items.length){empty.style.display='flex';full.style.display='none';return;}
+  empty.style.display='none'; full.style.display='grid';
+
+  document.getElementById('cart-list').innerHTML = items.map(({p,qty})=>{
+    const bulk = p.bulk && p.bulkPct && qty>=p.bulk;
+    const ep = bulk ? p.price*(1-p.bulkPct/100) : p.price;
+    const lineTotal = ep*qty*1.18;
+    return `<div class="cart-item">
+      <div class="ci-img ${p.img}">${p.img==='bricks'?'🧱':p.img==='concrete'?'🏗️':'⛏️'}</div>
+      <div class="ci-info">
+        <div class="ci-name">${p.name}</div>
+        <div class="ci-price">${INR(ep*1.18)} per ${p.unit}</div>
+        ${bulk?`<div class="ci-bulk">✓ ${p.bulkPct}% bulk discount applied</div>`:''}
+      </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="chgQty(${p.id},-${p.min})">−</button>
+        <div class="qty-val">${qty.toLocaleString('en-IN')}</div>
+        <button class="qty-btn" onclick="chgQty(${p.id},${p.min})">+</button>
+      </div>
+      <div class="ci-total">
+        <div class="ci-total-amt">${INR(lineTotal)}</div>
+        <button class="remove-btn" onclick="remItem(${p.id})">Remove</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  recalc();
+}
+
+function chgQty(id,d){
+  if(!cart[id])return;
+  cart[id].qty=Math.max(cart[id].p.min,cart[id].qty+d);
+  updateBadge(); renderCart();
+}
+function remItem(id){delete cart[id];updateBadge();renderCart();toast('Item removed');}
+
+function recalc(){
+  const items=Object.values(cart);
+  const sub=items.reduce((s,{p,qty})=>{const bulk=p.bulk&&p.bulkPct&&qty>=p.bulk;const ep=bulk?p.price*(1-p.bulkPct/100):p.price;return s+ep*qty;},0);
+  const tax=sub*0.18; const total=sub+tax-discount;
+  document.getElementById('s-sub').textContent=INR(sub);
+  document.getElementById('s-tax').textContent=INR(tax);
+  document.getElementById('s-tot').textContent=INR(Math.max(0,total));
+}
+
+function applyCoupon(){
+  const code=document.getElementById('coupon-in').value.trim().toUpperCase();
+  const items=Object.values(cart);
+  const sub=items.reduce((s,{p,qty})=>s+p.price*qty,0)*1.18;
+  const coupons={WELCOME10:{pct:10,min:5000},BULK2024:{flat:1500,min:25000},ROAD15:{pct:15,min:50000}};
+  if(!coupons[code]){toast('Invalid coupon code');return;}
+  const c=coupons[code];
+  if(sub<c.min){toast(`Minimum order ${INR(c.min)} required for ${code}`);return;}
+  discount=c.flat||sub*(c.pct/100);
+  const dr=document.getElementById('disc-row');
+  dr.style.display='flex';
+  document.getElementById('disc-label').textContent=`Discount (${code})`;
+  document.getElementById('s-disc').textContent='− '+INR(discount);
+  recalc(); toast(`✓ Coupon ${code} applied!`);
+}
+
+function doCheckout(){
+  if(!Object.keys(cart).length){toast('Cart is empty');return;}
+  const num='BRB'+Date.now().toString().slice(-8);
+  const total=Object.values(cart).reduce((s,{p,qty})=>s+p.price*qty*1.18,0)-discount;
+  placedOrders.unshift({num,items:Object.values(cart).map(({p,qty})=>({name:p.name,qty,unit:p.unit})),total,date:new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short'}),status:'Confirmed'});
+  document.getElementById('success-order-num').textContent=num;
+  cart={}; discount=0; document.getElementById('coupon-in').value='';
+  document.getElementById('disc-row').style.display='none';
+  updateBadge(); show('success');
+}
+
+function renderOrders(){
+  const all=[...placedOrders,...ORDERS_DATA.map(o=>({num:o.num,items:[{name:'5,000 Standard Fly Ash Bricks',qty:5000,unit:'brick'}],total:parseInt(o.amt.replace(/[₹,]/g,'')),date:o.date,status:o.status}))];
+  document.getElementById('orders-list').innerHTML = all.map(o=>`<div class="order-card">
+    <div class="order-top">
+      <div><div class="order-num">${o.num}</div><div class="order-date">${o.date}</div></div>
+      <span class="status-pill ${statusClass(o.status)}">● ${o.status}</span>
+    </div>
+    <div class="order-items-preview">${o.items.map(i=>`${i.name} × ${typeof i.qty==='number'?i.qty.toLocaleString('en-IN'):i.qty} ${i.unit||''}`).join(', ')}</div>
+    <div class="order-bottom">
+      <div class="order-total">${typeof o.total==='number'?INR(o.total):o.total}</div>
+      <button style="background:none;border:0.5px solid var(--border);border-radius:7px;padding:6px 14px;cursor:pointer;font-size:12px;font-weight:600" onclick="toast('Track your order — connect to backend for live tracking')">Track Order →</button>
+    </div>
+  </div>`).join('');
+}
+
+function submitContact(){
+  const name=document.getElementById('c-name').value.trim();
+  const phone=document.getElementById('c-phone').value.trim();
+  const msg=document.getElementById('c-msg').value.trim();
+  if(!name||!phone||!msg){toast('Please fill Name, Phone and Message');return;}
+  document.getElementById('contact-form-wrap').innerHTML=`<div style="text-align:center;padding:48px 20px"><div style="font-size:56px;margin-bottom:16px">✅</div><div style="font-size:20px;font-weight:800;margin-bottom:8px">Message Sent!</div><div style="color:var(--muted);font-size:14px;margin-bottom:24px">Our team will contact you within 24 hours.</div><button class="btn-hero" onclick="show('home')">Back to Home</button></div>`;
+}
+
+function renderRevenueChart(){
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const vals=[28,35,42,48,38,55,61,44,52,58,47,65];
+  const max=Math.max(...vals);
+  document.getElementById('rev-chart').innerHTML=months.map((m,i)=>`<div class="bc-wrap"><div class="bc-bar" style="height:${Math.round((vals[i]/max)*88)}px"></div><div class="bc-label">${m}</div></div>`).join('');
+}
+
+function renderAdminOrders(){
+  document.getElementById('a-orders-body').innerHTML=ORDERS_DATA.map(o=>`<div class="table-row" style="grid-template-columns:1.3fr 1fr 1fr 100px 80px 60px" onclick="openOrderModal('${o.num}','${o.customer}','${o.amt}','${o.status}')"><span style="font-family:monospace;font-weight:700">${o.num}</span><span>${o.customer}</span><span style="font-weight:700">${o.amt}</span><span><span class="status-pill ${statusClass(o.status)}">● ${o.status}</span></span><span style="color:var(--muted)">${o.date}</span><span style="color:var(--brick);font-weight:600;font-size:12px">View</span></div>`).join('');
+}
+
+function renderAdminProducts(){
+  document.getElementById('a-products-body').innerHTML=PRODUCTS.map(p=>`<div class="table-row" style="grid-template-columns:2fr 1.2fr 1fr 1fr 70px"><span style="font-weight:600">${p.img==='bricks'?'🧱':p.img==='concrete'?'🏗️':'⛏️'} ${p.name}</span><span style="color:var(--muted)">${p.cat}</span><span style="font-weight:700">${INR(p.price)}/${p.unit}</span><span style="font-weight:700;color:${p.stock<50?'#b91c1c':p.stock<200?'#854d0e':'#15803d'}">${p.stock.toLocaleString('en-IN')}</span><span><span class="status-pill s-delivered">Active</span></span></div>`).join('');
+}
+
+function renderInventory(){
+  document.getElementById('inv-grid').innerHTML=INVENTORY.map(inv=>{
+    const low=inv.avail<=inv.reorder;
+    const pct=Math.min(100,Math.round((inv.avail/(Math.max(inv.reorder,inv.avail))*100)));
+    return `<div class="inv-card${low?' low':''}">
+      <div class="inv-name">${inv.name}${low?' <span style="color:#b91c1c;font-size:11px;font-weight:700">⚠ LOW</span>':''}</div>
+      <div class="inv-wh">📍 ${inv.wh}</div>
+      <div class="inv-stat"><span class="inv-stat-label">Available</span><span class="inv-stat-val" style="color:${low?'#b91c1c':'#15803d'}">${inv.avail.toLocaleString('en-IN')}</span></div>
+      <div class="inv-stat"><span class="inv-stat-label">Reserved</span><span class="inv-stat-val">${inv.reserved.toLocaleString('en-IN')}</span></div>
+      <div class="inv-stat"><span class="inv-stat-label">Reorder Level</span><span class="inv-stat-val">${inv.reorder.toLocaleString('en-IN')}</span></div>
+      <div class="progress"><div class="progress-fill" style="width:${pct}%;background:${low?'#b91c1c':'var(--brick)'}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderCustomers(){
+  document.getElementById('a-customers-body').innerHTML=CUSTOMERS.map(c=>`<div class="table-row" style="grid-template-columns:1.5fr 1fr 80px 1fr 80px"><div><div style="font-weight:700">${c.name}</div><div style="font-size:11px;color:var(--muted)">${c.email}</div></div><div style="font-size:13px;color:var(--muted)">${c.phone}</div><div style="font-weight:700;text-align:center">${c.orders}</div><div style="font-weight:700;color:#15803d">${c.spent}</div><span><span class="status-pill s-delivered">${c.status}</span></span></div>`).join('');
+}
+
+function populateStockSelect(){
+  document.getElementById('stock-prod').innerHTML=PRODUCTS.map(p=>`<option>${p.name}</option>`).join('');
+}
+
+function show(pg){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+  document.getElementById('pg-'+pg).classList.add('active');
+  const nl=document.getElementById('nl-'+pg);
+  if(nl) nl.classList.add('active');
+  if(pg==='cart') renderCart();
+  if(pg==='products'){document.getElementById('prod-grid').innerHTML=PRODUCTS.map(p=>prodCard(p)).join('');}
+  if(pg==='orders') renderOrders();
+  if(pg==='admin'){renderRevenueChart();renderAdminOrders();renderAdminProducts();renderInventory();renderCustomers();}
+}
+
+function adminPage(tab, el){
+  document.querySelectorAll('.admin-pg').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById('pg-'+tab).classList.add('active');
+  el.classList.add('active');
+}
+
+function openOrderModal(num,customer,amt,status){
+  document.getElementById('m-order-title').textContent=num+' — '+customer;
+  document.getElementById('m-order-sub').textContent=amt+' · '+status;
+  document.getElementById('m-status').value=status;
+  document.getElementById('order-modal').classList.add('open');
+}
+
+function saveOrder(){
+  const s=document.getElementById('m-status').value;
+  closeModal('order-modal');
+  toast('Order status updated to: '+s);
+}
+
+function openStockModal(){document.getElementById('stock-modal').classList.add('open');}
+function saveStock(){closeModal('stock-modal');toast('Stock updated successfully');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+let toastT;
+function toast(msg){
+  const el=document.getElementById('toast-el');
+  el.textContent=msg; el.classList.add('visible');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>el.classList.remove('visible'),3200);
+}
+
+// Init
+renderHomeGrid();
+populateStockSelect();
+</script>
+</body>
+</html>
