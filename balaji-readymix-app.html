@@ -794,7 +794,7 @@ function submitContact(){
   const name=document.getElementById('c-name').value.trim();
   const phone=document.getElementById('c-phone').value.trim();
   const msg=document.getElementById('c-msg').value.trim();
-  if(!name||!phone||!msg){toast('Please fill Name, Phone and Message');return;}
+  if(!name||!phone||!msg){toast('Please fill the Name, Phone and Message');return;}
   document.getElementById('contact-form-wrap').innerHTML=`<div style="text-align:center;padding:48px 20px"><div style="font-size:56px;margin-bottom:16px">✅</div><div style="font-size:20px;font-weight:800;margin-bottom:8px">Message Sent!</div><div style="color:var(--muted);font-size:14px;margin-bottom:24px">Our team will contact you within 24 hours.</div><button class="btn-hero" onclick="show('home')">Back to Home</button></div>`;
 }
 
