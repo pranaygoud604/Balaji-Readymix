@@ -270,4 +270,270 @@ textarea.form-input{resize:vertical;min-height:90px}
       </div>
       <div>
         <div class="nav-title-main">Balaji Readymix & Bricks</div>
-        <div class="nav-title-sub">JAYA
+        <div class="nav-title-sub">JAYASHANKAR BHUPALPALLY · TELANGANA</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <button class="nav-link active" id="nl-home" onclick="show('home')">Home</button>
+      <button class="nav-link" id="nl-products" onclick="show('products')">Products</button>
+      <button class="nav-link" id="nl-orders" onclick="show('orders')">My Orders</button>
+      <button class="nav-link" id="nl-contact" onclick="show('contact')">Contact</button>
+      <button class="nav-link" id="nl-admin" onclick="show('admin')">Admin</button>
+    </div>
+    <div class="nav-right">
+      <button class="cart-btn" onclick="show('cart')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Cart <span class="cart-badge" id="cart-count">0</span>
+      </button>
+      <button class="user-btn" onclick="toast('Login connects to your backend auth system')">Login</button>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <div class="page active" id="pg-home">
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="hero-eyebrow">Telangana's Trusted Supplier</div>
+        <h1>Building<span class="accent">Stronger</span><span class="sub">Foundations</span></h1>
+        <p>Premium fly ash bricks and readymix concrete engineered for roads, buildings and infrastructure across Jayashankar Bhupalpally and Telangana.</p>
+        <div class="hero-btns">
+          <button class="btn-hero" onclick="show('products')">Shop Products →</button>
+          <button class="btn-hero-ghost" onclick="show('contact')">Get a Quote</button>
+        </div>
+      </div>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-item"><div class="stat-num">15+</div><div class="stat-label">Years Experience</div></div>
+      <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Projects  Delivered</div></div>
+      <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">Warehouses in Telangana</div></div>
+      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">IS Compliant</div></div>
+    </div>
+    <div class="section">
+      <div class="section-hd">
+        <div class="section-title">Featured Products</div>
+        <button class="see-all" onclick="show('products')">View all products →</button>
+      </div>
+      <div class="products-grid" id="home-grid"></div>
+    </div>
+    <div class="section" style="background:var(--white);border-top:0.5px solid var(--border)">
+      <div class="section-title" style="margin-bottom:18px">Why Choose Balaji?</div>
+      <div class="features-grid">
+        <div class="feature-card"><span class="feat-icon">🏆</span><div class="feat-title">Certified Quality</div><div class="feat-desc">IS 12894 fly ash bricks and IS 4926 readymix concrete. Every batch quality-inspected.</div></div>
+        <div class="feature-card"><span class="feat-icon">🚚</span><div class="feat-title">Fast Delivery</div><div class="feat-desc">On-time dispatch from Burrakayalagudem and Warangal warehouses across Telangana.</div></div>
+        <div class="feature-card"><span class="feat-icon">🌿</span><div class="feat-title">Eco-Friendly</div><div class="feat-desc">Fly ash bricks repurpose industrial waste, reducing landfill and carbon footprint.</div></div>
+        <div class="feature-card"><span class="feat-icon">💰</span><div class="feat-title">Bulk Discounts</div><div class="feat-desc">Volume pricing from 5,000 units. Transparent quotes, zero hidden costs.</div></div>
+      </div>
+    </div>
+    <div class="cta-section">
+      <h2>Ready to Build?</h2>
+      <p>Order online or call us for bulk pricing. We deliver across Telangana.</p>
+      <button class="btn-hero" onclick="show('products')">Order Now →</button>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="page" id="pg-products">
+    <div class="toolbar">
+      <input class="search-box" id="srch" placeholder="Search products…" oninput="filterProds()">
+      <select class="filter-sel" id="cat-sel" onchange="filterProds()">
+        <option value="">All Categories</option>
+        <option value="Fly Ash Bricks">Fly Ash Bricks</option>
+        <option value="Readymix Concrete">Readymix Concrete</option>
+        <option value="Building Materials">Building Materials</option>
+      </select>
+    </div>
+    <div class="products-page-grid" id="prod-grid"></div>
+  </div>
+
+  <!-- CART -->
+  <div class="page" id="pg-cart">
+    <div class="empty-cart" id="empty-c">
+      <div class="empty-icon">🛒</div>
+      <div style="font-weight:700;font-size:16px;color:var(--text)">Your cart is empty</div>
+      <div>Add products to start your order</div>
+      <button class="btn-hero" onclick="show('products')" style="margin-top:8px">Browse Products</button>
+    </div>
+    <div class="cart-wrap" id="cart-full" style="display:none">
+      <div>
+        <div class="cart-title">Cart Items</div>
+        <div class="cart-items" id="cart-list"></div>
+      </div>
+      <div class="order-summary">
+        <div class="summary-title">Order Summary</div>
+        <div class="sum-row"><span>Subtotal</span><span id="s-sub">₹0</span></div>
+        <div class="sum-row"><span>GST (18%)</span><span id="s-tax">₹0</span></div>
+        <div class="coupon-wrap">
+          <input class="coupon-in" id="coupon-in" placeholder="COUPON CODE">
+          <button class="coupon-apply" onclick="applyCoupon()">Apply</button>
+        </div>
+        <div class="discount-row" id="disc-row"><span id="disc-label">Discount</span><span id="s-disc"></span></div>
+        <div class="sum-row total"><span>Total</span><span id="s-tot">₹0</span></div>
+        <button class="checkout-btn" onclick="doCheckout()">Proceed to Checkout →</button>
+        <div class="pay-note">🔒 Secure payment via Razorpay<br>UPI · Cards · Net Banking</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDERS -->
+  <div class="page" id="pg-orders">
+    <div class="orders-wrap">
+      <div class="section-title">My Orders</div>
+      <div class="orders-list" id="orders-list"></div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="page" id="pg-contact">
+    <div class="contact-wrap">
+      <div class="contact-info-cards">
+        <div class="info-card"><div class="info-icon">📍</div><div><div class="info-title">Our Location</div><div class="info-lines">Burrakayalagudem, Ghanpur (M)<br>Jayashankar Bhupalpally<br>Telangana – 506 201</div></div></div>
+        <div class="info-card"><div class="info-icon">📞</div><div><div class="info-title">Call Us</div><div class="info-lines">+91 9000 000 000<br>+91 9000 000 001<br>Mon–Sat: 8AM – 6PM</div></div></div>
+        <div class="info-card"><div class="info-icon">✉️</div><div><div class="info-title">Email Us</div><div class="info-lines">admin@balajibricks.com<br>orders@balajibricks.com</div></div></div>
+        <div class="info-card" style="background:#fef2f2;border-color:rgba(192,57,43,0.2)"><div class="info-icon">💡</div><div><div class="info-title">Bulk Orders</div><div class="info-lines">For orders above ₹50,000 call directly for special pricing and dedicated support.</div></div></div>
+      </div>
+      <div class="contact-form" id="contact-form-wrap">
+        <div class="form-title">Send a Message</div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Your Name *</label><input class="form-input" id="c-name" placeholder="Raju Sharma"></div>
+          <div class="form-group"><label class="form-label">Phone *</label><input class="form-input" id="c-phone" placeholder="9876543210"></div>
+          <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="c-email" type="email" placeholder="you@example.com"></div>
+          <div class="form-group">
+            <label class="form-label">Subject</label>
+            <select class="form-input" id="c-subject">
+              <option>Bulk Order Enquiry</option>
+              <option>Product Information</option>
+              <option>Pricing & Quotation</option>
+              <option>Delivery Query</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group full"><label class="form-label">Message *</label><textarea class="form-input" id="c-msg" placeholder="Tell us about your project, quantity needed, and delivery location…"></textarea></div>
+        </div>
+        <button class="submit-btn" onclick="submitContact()">Send Message →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div class="page" id="pg-admin">
+    <div class="admin-shell">
+      <div class="sidebar">
+        <div class="sidebar-section">Main Menu</div>
+        <button class="sidebar-item active" id="si-dashboard" onclick="adminPage('dashboard',this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard
+        </button>
+        <button class="sidebar-item" id="si-orders" onclick="adminPage('aorders',this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>Orders
+        </button>
+        <button class="sidebar-item" id="si-products" onclick="adminPage('aproducts',this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="14" width="20" height="7" rx="1"/><rect x="2" y="7" width="20" height="6" rx="1"/><rect x="2" y="2" width="20" height="4" rx="1"/></svg>Products
+        </button>
+        <button class="sidebar-item" id="si-inventory" onclick="adminPage('ainventory',this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inventory
+        </button>
+        <button class="sidebar-item" id="si-customers" onclick="adminPage('acustomers',this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Customers
+        </button>
+        <button class="sidebar-item" id="si-coupons" onclick="adminPage('acoupons',this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Coupons
+        </button>
+        <div class="sidebar-bottom">
+          <button class="sidebar-item" onclick="show('home')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>View Store
+          </button>
+        </div>
+      </div>
+      <div class="admin-main">
+        <!-- Dashboard -->
+        <div class="admin-pg active" id="pg-dashboard">
+          <div class="admin-hd"><h2>Dashboard</h2><span style="font-size:12px;color:var(--muted)">April 2025</span></div>
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-label">Total Revenue</div><div class="kpi-value">₹4.82L</div><div class="kpi-trend up">↑ 12.4% vs last month</div></div>
+            <div class="kpi"><div class="kpi-label">Orders This Month</div><div class="kpi-value">164</div><div class="kpi-trend up">↑ 8.1% vs last month</div></div>
+            <div class="kpi"><div class="kpi-label">Total Customers</div><div class="kpi-value">47</div><div class="kpi-trend" style="color:var(--muted)">+6 new this month</div></div>
+            <div class="kpi"><div class="kpi-label">Low Stock Alerts</div><div class="kpi-value down">3</div><div class="kpi-trend down">Items need restocking</div></div>
+          </div>
+          <div class="charts-row">
+            <div class="chart-card">
+              <div class="chart-card-title">Monthly Revenue (₹ thousands)</div>
+              <div class="bar-chart" id="rev-chart"></div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-card-title">Orders by Status</div>
+              <div class="legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#15803d"></div><span>Delivered — 98 (60%)</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#1d4ed8"></div><span>Confirmed — 32 (20%)</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#854d0e"></div><span>Dispatched — 22 (13%)</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#6b7280"></div><span>Pending — 12 (7%)</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="data-table">
+            <div class="table-header" style="grid-template-columns:1.4fr 1fr 1fr 90px 80px"><span>Order #</span><span>Customer</span><span>Amount</span><span>Status</span><span>Date</span></div>
+            <div class="table-row" style="grid-template-columns:1.4fr 1fr 1fr 90px 80px" onclick="openOrderModal('BRB250401','Raju Sharma','₹47,600','Delivered')"><span style="font-family:monospace;font-weight:700">BRB250401</span><span>Raju Sharma</span><span style="font-weight:700">₹47,600</span><span><span class="status-pill s-delivered">● Delivered</span></span><span style="color:var(--muted)">Apr 1</span></div>
+            <div class="table-row" style="grid-template-columns:1.4fr 1fr 1fr 90px 80px" onclick="openOrderModal('BRB250402','Priya Reddy','₹66,940','Dispatched')"><span style="font-family:monospace;font-weight:700">BRB250402</span><span>Priya Reddy</span><span style="font-weight:700">₹66,940</span><span><span class="status-pill s-dispatched">● Dispatched</span></span><span style="color:var(--muted)">Apr 2</span></div>
+            <div class="table-row" style="grid-template-columns:1.4fr 1fr 1fr 90px 80px" onclick="openOrderModal('BRB250403','Suresh Kumar','₹1,23,400','Confirmed')"><span style="font-family:monospace;font-weight:700">BRB250403</span><span>Suresh Kumar</span><span style="font-weight:700">₹1,23,400</span><span><span class="status-pill s-confirmed">● Confirmed</span></span><span style="color:var(--muted)">Apr 4</span></div>
+            <div class="table-row" style="grid-template-columns:1.4fr 1fr 1fr 90px 80px" onclick="openOrderModal('BRB250404','Anjali Verma','₹28,750','Pending')"><span style="font-family:monospace;font-weight:700">BRB250404</span><span>Anjali Verma</span><span style="font-weight:700">₹28,750</span><span><span class="status-pill s-pending">● Pending</span></span><span style="color:var(--muted)">Apr 5</span></div>
+            <div class="table-row" style="grid-template-columns:1.4fr 1fr 1fr 90px 80px" onclick="openOrderModal('BRB250405','Ramesh Yadav','₹89,200','Delivered')"><span style="font-family:monospace;font-weight:700">BRB250405</span><span>Ramesh Yadav</span><span style="font-weight:700">₹89,200</span><span><span class="status-pill s-delivered">● Delivered</span></span><span style="color:var(--muted)">Apr 6</span></div>
+          </div>
+        </div>
+
+        <!-- Orders -->
+        <div class="admin-pg" id="pg-aorders">
+          <div class="admin-hd"><h2>Orders</h2></div>
+          <div style="display:flex;gap:10px;margin-bottom:16px">
+            <input class="search-box" style="max-width:260px" placeholder="Search order # or customer…">
+            <select class="filter-sel"><option>All Statuses</option><option>Pending</option><option>Confirmed</option><option>Dispatched</option><option>Delivered</option><option>Cancelled</option></select>
+          </div>
+          <div class="data-table">
+            <div class="table-header" style="grid-template-columns:1.3fr 1fr 1fr 100px 80px 60px"><span>Order #</span><span>Customer</span><span>Amount</span><span>Status</span><span>Date</span><span>Action</span></div>
+            <div id="a-orders-body"></div>
+          </div>
+        </div>
+
+        <!-- Products -->
+        <div class="admin-pg" id="pg-aproducts">
+          <div class="admin-hd"><h2>Products</h2><button class="admin-action-btn" onclick="toast('Product form — connect to backend to save new products')">+ Add Product</button></div>
+          <div class="data-table">
+            <div class="table-header" style="grid-template-columns:2fr 1.2fr 1fr 1fr 70px"><span>Product</span><span>Category</span><span>Price</span><span>Stock</span><span>Status</span></div>
+            <div id="a-products-body"></div>
+          </div>
+        </div>
+
+        <!-- Inventory -->
+        <div class="admin-pg" id="pg-ainventory">
+          <div class="admin-hd"><h2>Inventory</h2><button class="admin-action-btn" onclick="openStockModal()">Update Stock</button></div>
+          <div style="background:#fef2f2;border:0.5px solid rgba(192,57,43,0.25);border-radius:var(--radius);padding:12px 16px;margin-bottom:18px;font-size:13px;color:#991b1b;display:flex;align-items:center;gap:8px">
+            <span style="font-size:16px">⚠️</span> 3 products are below reorder level — M20 Concrete, River Sand, Coarse Aggregate 20mm
+          </div>
+          <div class="inv-grid" id="inv-grid"></div>
+        </div>
+
+        <!-- Customers -->
+        <div class="admin-pg" id="pg-acustomers">
+          <div class="admin-hd"><h2>Customers</h2></div>
+          <div class="data-table">
+            <div class="table-header" style="grid-template-columns:1.5fr 1fr 80px 1fr 80px"><span>Name</span><span>Contact</span><span>Orders</span><span>Total Spent</span><span>Status</span></div>
+            <div id="a-customers-body"></div>
+          </div>
+        </div>
+
+        <!-- Coupons -->
+        <div class="admin-pg" id="pg-acoupons">
+          <div class="admin-hd"><h2>Coupons</h2><button class="admin-action-btn" onclick="toast('Coupon form — connect to backend to create coupons')">+ Create Coupon</button></div>
+          <div class="data-table">
+            <div class="table-header" style="grid-template-columns:1fr 1fr 1fr 80px 1fr 70px"><span>Code</span><span>Type</span><span>Value</span><span>Uses</span><span>Valid Until</span><span>Status</span></div>
+            <div>
+              <div class="table-row" style="grid-template-columns:1fr 1fr 1fr 80px 1fr 70px"><span style="font-family:monospace;font-weight:700;background:#f3f4f6;padding:2px 8px;border-radius:4px">WELCOME10</span><span>Percentage</span><span>10% off</span><span>234/1000</span><span>Dec 31, 2025</span><span><span class="status-pill s-delivered">Active</span></span></div>
+              <div class="table-row" style="grid-template-columns:1fr 1fr 1fr 80px 1fr 70px"><span style="font-family:monospace;font-weight:700;background:#f3f4f6;padding:2px 8px;border-radius:4px">BULK2024</span><span>Flat</span><span>₹1,500 off</span><span>89/500</span><span>Jun 30, 2025</span><span><span class="status-pill s-delivered">Active</span></span></div>
+              <div class="table-row" style="grid-template-columns:1fr 1fr 1fr 80px 1fr 70px"><span style="font-family:monospace;font-weight:700;background:#f3f4f6;padding:2px 8px;border-radius:4px">ROAD15</span><span>Percentage</span><span>15% off</span><span>12/200</span><span>Sep 30, 2025</span><span><span class="status-pill s-delivered">Active</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS SCREEN (checkout) -->
+  <div class="page" id="pg-success">
+    <div class="success-s
