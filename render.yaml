@@ -11,5 +11,7 @@ services:
         value: admin@balaji.com
       - key: ADMIN_PASSWORD
         value: balaji@123
-      - key: PORT
-        value: 3001
+      - key: TURSO_DB_URL
+        sync: false
+      - key: TURSO_DB_AUTH_TOKEN
+        sync: false

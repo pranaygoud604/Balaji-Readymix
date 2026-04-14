@@ -531,7 +531,7 @@ tr:hover td{background:var(--surface)}
 // Change this to your Render backend URL after deployment
 const API = window.location.hostname === 'localhost'
   ? 'http://localhost:3001'
-  : 'https://YOUR-BACKEND.onrender.com'; // ← CHANGE THIS after deploying backend
+  : ''; // same origin when deployed on Render
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let token = localStorage.getItem('balaji_token');
