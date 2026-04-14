@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: balaji-readymix-api
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        value: admin@balaji.com
+      - key: ADMIN_PASSWORD
+        value: balaji@123
+      - key: PORT
+        value: 3001
